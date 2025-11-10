@@ -80,6 +80,19 @@ display:flex;align-items:center;justify-content:center;cursor:pointer;}
 background:radial-gradient(circle,rgba(255,215,0,0.95) 0%,rgba(255,215,0,0.12) 60%,transparent 100%);
 transform:translate(-50%,-50%);animation:spark 450ms ease-out forwards;z-index:8;}
 @keyframes spark{from{opacity:1;transform:translate(-50%,-50%) scale(1);}to{opacity:0;transform:translate(-50%,-50%) scale(3);}}
+/* Ajustement du cadre de résultat sur mobile */
+@media (max-width: 600px) {
+  .bubble {
+    max-width: 88%;
+    padding: 16px 36px 16px 16px;
+    font-size: 15px;
+  }
+    /* Décalage vertical de la fenêtre pour plus d'espace */
+  .overlay {
+    align-items: flex-start;
+    padding-top: 10vh;
+  }
+}
 </style>
 </head>
 <body>
@@ -554,6 +567,7 @@ document.addEventListener('keydown',(e)=>{ if (e.code === 'Space') { e.preventDe
 </script>
 </body>
 </html>
+
 
 
 
