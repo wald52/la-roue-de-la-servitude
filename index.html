@@ -729,8 +729,21 @@ drawWheel(angle);
 lastTime = performance.now();
 window._animFrame = requestAnimationFrame(animate);
 
-/* keyboard accessibility */
-document.addEventListener('keydown',(e)=>{ if (e.code === 'Space') { e.preventDefault(); boostWheel(); }});
+// ✅ Gère la touche Espace uniquement quand aucune fenêtre n'est ouverte
+document.addEventListener('keydown',(e)=>{
+  if (e.code === 'Space') {
+    e.preventDefault();
+    
+    // Vérifie si une fenêtre (overlay) est visible
+    const anyModalOpen = 
+      document.getElementById('overlay')?.style.display === 'flex' ||
+      document.getElementById('feedbackForm')?.style.display === 'flex';
+
+    // Si aucune fenêtre ouverte -> autorise la rotation
+    if (!anyModalOpen) {
+      boostWheel();
+  }
+});
 
 // === Détection automatique de l'environnement (Netlify ou autre) ===
 const isNetlifyHost = window.location.hostname.includes("netlify.app");
@@ -781,6 +794,7 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
 </script>
 </body>
 </html>
+
 
 
 
