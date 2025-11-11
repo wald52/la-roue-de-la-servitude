@@ -346,6 +346,7 @@ function drawWheel(a){
   if (centerLoaded){
     const imgSize = R * 1.05;
     ctx.save();
+    ctx.rotate(Math.PI / 2);
     ctx.beginPath();
     ctx.arc(0,0,imgSize/2,0,Math.PI*2);
     ctx.closePath();
@@ -807,6 +808,7 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
 
 </body>
 </html>
+
 
 
 
