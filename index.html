@@ -771,13 +771,17 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
     })
     .catch(err => {
       console.error("Erreur lors de l'envoi du feedback :", err);
-      alert("⚠️ Une erreur s'est produite lors de l'envoi du message.");
+      if (err && err.message) {
+        alert("⚠️ " + err.message);
+      } else {
+        alert("⚠️ Une erreur s'est produite lors de l'envoi du message.");
     });
 }
   
 </script>
 </body>
 </html>
+
 
 
 
