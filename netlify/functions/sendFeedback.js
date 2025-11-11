@@ -1,9 +1,29 @@
 const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
+  // === 💡 Gestion des CORS pour plusieurs domaines autorisés ===
+  const allowedOrigins = [
+    "https://wald52.github.io",
+    "https://wald52.github.io/larouedelaservitude",
+    "https://larouedelaservitude.netlify.app",
+    "https://www.larouedelaservitude.fr"
+  ];
+
+  const origin = event.headers.origin;
+  const headers = {
+    "Access-Control-Allow-Origin": allowedOrigins.includes(origin) ? origin : "null",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
+
+  // ✅ Répond au prévol (préflight CORS)
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 200, headers, body: "OK" };
+  }
+
   try {
     if (event.httpMethod !== "POST") {
-      return { statusCode: 405, body: "Method Not Allowed" };
+      return { statusCode: 405, headers, body: "Method Not Allowed" };
     }
 
     const { resultText, userMessage, type } = JSON.parse(event.body);
