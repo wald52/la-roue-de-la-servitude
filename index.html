@@ -396,7 +396,10 @@ function getSelectedIndex(a){
 }
 
 function showOverlay(text){
-  const intros = ["🎯 Le sort a parlé !", "✨ Voici le résultat :", "🍀 Et le gagnant est…"];
+  const intros = [
+    "🎯 Le sort a parlé !", 
+    "✨ Voici le résultat :", 
+    "🍀 Et le gagnant est…"];
   const intro = intros[Math.floor(Math.random()*intros.length)];
   const formatted = String(text)
     .replace(/(Recette\s*:)/gi,"\n$1")
@@ -415,7 +418,25 @@ function showOverlay(text){
   overlay.style.display = 'flex';
   overlay.setAttribute('aria-hidden','false');
 
-  document.getElementById('openFeedbackForm').style.display = 'inline-block';
+  // 🧩 branche les deux boutons à ton formulaire Netlify
+  const infoBtn = document.getElementById("btn-info");
+  const errorBtn = document.getElementById("btn-error");
+
+  if (infoBtn && errorBtn) {
+    infoBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      // préremplit et ouvre le formulaire
+      document.getElementById("formResult").value = text + " (complément d'information)";
+      openFeedback(text);
+    });
+
+    errorBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      // préremplit et ouvre le formulaire
+      document.getElementById("formResult").value = text + " (signalement d'erreur)";
+      openFeedback(text);
+    });
+  }
 }
 
 // handlers for the feedback modal (adapt to your showOverlay call)
@@ -696,6 +717,7 @@ document.addEventListener('keydown',(e)=>{ if (e.code === 'Space') { e.preventDe
 </script>
 </body>
 </html>
+
 
 
 
