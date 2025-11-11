@@ -28,6 +28,15 @@ exports.handler = async (event) => {
 
     const { resultText, userMessage, type } = JSON.parse(event.body);
 
+    // 🧩 Anti-spam simple côté serveur
+  if (!userMessage || userMessage.trim().length < 10) {
+    return {
+      statusCode: 400,
+      headers,
+      body: "Message trop court ou vide — merci de détailler un peu plus votre retour."
+    };
+  }
+
     // Configuration
     const repoOwner = "wald52";
     const repoName = "larouedelaservitude";
