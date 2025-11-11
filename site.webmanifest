@@ -1,6 +1,6 @@
 {
     "name": "La roue de la servitude",
-    "short_name": "La roue servitude",
+    "short_name": "La roue de la servitude",
     "description": "La roue de la servitude",
     "start_url": "/larouedelaservitude/",
     "scope": "/larouedelaservitude/",
@@ -118,5 +118,6 @@
     ],
     "prefer_related_applications": false
   }
+
 
 
