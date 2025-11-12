@@ -1,5 +1,7 @@
 <!-- buttons.html -->
 <div id="dynamic-buttons">
+
+  <!-- 🔗 Boutons de partage -->
   <div class="share-bar" id="shareBar">
     <button class="share-btn" data-platform="facebook" title="Partager sur Facebook">📘</button>
     <button class="share-btn" data-platform="x" title="Partager sur X / Twitter">🐦</button>
@@ -9,11 +11,85 @@
     <button class="share-btn" data-platform="tiktok" title="Partager sur TikTok">🎵</button>
     <button class="share-btn" data-platform="whatsapp" title="Partager sur WhatsApp">💬</button>
     <button class="share-btn" data-platform="telegram" title="Partager sur Telegram">📨</button>
+    <button class="share-btn" data-platform="email" title="Partager par email">✉️</button>
     <button class="share-btn" id="copyText" title="Copier le texte">📋</button>
   </div>
 
+  <!-- 💬 Boutons de retour utilisateur -->
   <div class="feedback-buttons">
     <a id="btn-info" class="feedback-btn" href="#">Donner un complément d'information</a>
     <a id="btn-error" class="feedback-btn" href="#">Signaler une erreur</a>
   </div>
+
 </div>
+
+<style>
+/* === Styles importés depuis ton index === */
+
+/* Partage */
+.share-bar {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+}
+.share-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: #111;
+  font-size: 18px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+.share-btn:hover {
+  transform: scale(1.15);
+}
+.share-btn[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Feedback */
+.feedback-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.feedback-btn {
+  background: #c00;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.feedback-btn:hover {
+  background: #900;
+  transform: scale(1.05);
+}
+
+.feedback-btn:active {
+  transform: scale(0.97);
+}
+</style>
