@@ -367,32 +367,11 @@ function showOverlay(text){
   // 💬 contenu principal du résultat
   overlayText.innerHTML = `
     ${intro}<br><br>${formatted}
-    <div class="feedback-buttons">
-      <a id="btn-info" class="feedback-btn" href="#">Donner un complément d'information</a>
-      <a id="btn-error" class="feedback-btn" href="#">Signaler une erreur</a>
-    </div>
   `;
 
   overlay.style.display = 'flex';
   overlay.setAttribute('aria-hidden','false');
 
-  // 🧩 branche les deux boutons à ton formulaire Netlify
-  const infoBtn = document.getElementById("btn-info");
-  const errorBtn = document.getElementById("btn-error");
-
-  if (infoBtn && errorBtn) {
-    infoBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const userMsg = prompt("💬 Ajoutez votre complément d'information :");
-      if (userMsg) sendFeedbackToGitHub(text, userMsg, "info");
-    });
-
-    errorBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const userMsg = prompt("⚠️ Décrivez l'erreur que vous avez trouvée :");
-      if (userMsg) sendFeedbackToGitHub(text, userMsg, "error");
-    });
-  }
 }
 
 // handlers for the feedback modal (adapt to your showOverlay call)
@@ -747,5 +726,6 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
 
 </body>
 </html>
+
 
 
