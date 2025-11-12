@@ -42,15 +42,13 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/larouedelaservitude/icons/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/larouedelaservitude/icons/favicon-16x16.png">
 
+<!-- Poppins -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <!-- html2canvas pour la capture -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <style>
-:root{
-  --bg:#f7f7f7; --fg:#111; --ring:#e5e7eb;
-  --emoji-size:80px; --bg-size:200vw;
-}
+:root{--bg:#f7f7f7;--fg:#111;--ring:#e5e7eb;--emoji-size:80px; --bg-size:200vw;}
 html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--fg);}
 body::before,body::after{
   content:"";position:fixed;z-index:0;width:var(--bg-size);height:var(--bg-size);
@@ -92,7 +90,7 @@ background:radial-gradient(circle,rgba(255,215,0,0.95) 0%,rgba(255,215,0,0.12) 6
 transform:translate(-50%,-50%);animation:spark 450ms ease-out forwards;z-index:8;}
 @keyframes spark{from{opacity:1;transform:translate(-50%,-50%) scale(1);}to{opacity:0;transform:translate(-50%,-50%) scale(3);}}
 /* Ajustement du cadre de résultat sur mobile */
-@media (max-width: 600px) {
+/*@media (max-width: 600px) {
   .overlay {
     display: flex;
     align-items: center;
@@ -109,13 +107,14 @@ transform:translate(-50%,-50%);animation:spark 450ms ease-out forwards;z-index:8
     box-sizing: border-box;
   }
 }
+*/
   /* Empêche l'affichage initial de la fenêtre de résultat */
 .overlay[aria-hidden="true"] {
   display: none !important;
 }
-
+/*
   /* Boutons de retour utilisateur */
-.feedback-buttons {
+/*.feedback-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -142,27 +141,27 @@ transform:translate(-50%,-50%);animation:spark 450ms ease-out forwards;z-index:8
 .feedback-btn:active {
   transform: scale(0.97);
 }
-
+*/
 /* Empêche le défilement de la page sur mobile */
-html, body {
+/*html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
   overscroll-behavior: contain; /* bloque l'effet "rebond" sur mobile */
-  touch-action: none; /* empêche le scroll tactile */
+  /*touch-action: none;*/ /* empêche le scroll tactile */
 }
 
 /* Empêche un fond plus grand que l’écran */
-body {
+/*body {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 }
-
+*/
 </style>
 </head>
 <body>
@@ -181,7 +180,7 @@ body {
     </div>
   </div>
 </div>
-
+<!--
 <div id="overlay" class="overlay" aria-hidden="true">
   <div class="bubble" role="dialog" aria-modal="true">
     <div id="overlayText"></div>
@@ -199,9 +198,9 @@ body {
     <button id="overlayClose" class="close" aria-label="Fermer">✕</button>
   </div>
 </div>
-
+-->
 <!-- Modal feedback (placer dans body) -->
-<button id="openFeedbackForm" class="feedback-btn" style="display:none">Donner un complément d'information</button>
+<!--<button id="openFeedbackForm" class="feedback-btn" style="display:none">Donner un complément d'information</button>
 
 <div id="feedbackModal" style="display:none;position:fixed;inset:0;z-index:12000;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);">
   <form id="feedbackForm" style="background:#fff;padding:18px;border-radius:10px;max-width:520px;width:92%;box-sizing:border-box;">
@@ -222,6 +221,18 @@ body {
     </div>
     <div id="feedbackStatus" style="margin-top:10px;font-size:13px;color:#333;display:none;"></div>
   </form>
+</div>
+-->
+<!-- Conteneur vide qui chargera dynamiquement les boutons -->
+<div id="buttonsContainer"></div>
+
+<div id="overlay" class="overlay" aria-hidden="true">
+  <div class="bubble" role="dialog" aria-modal="true">
+    <div id="overlayText"></div>
+    <!-- Les boutons de partage et feedback sont injectés ici -->
+    <div id="buttonsContainerOverlay"></div>
+    <button id="overlayClose" class="close" aria-label="Fermer">✕</button>
+  </div>
 </div>
   
 <script>
@@ -644,11 +655,11 @@ document.addEventListener("visibilitychange", () => {
     wasSpinning = false;
   }
 });
-
+/*
 /* =======================
    PARTAGE / CAPTURE amélioré
    ======================= */
-document.querySelectorAll('.share-btn[data-platform]').forEach(btn => {
+/*document.querySelectorAll('.share-btn[data-platform]').forEach(btn => {
   btn.addEventListener('click', async () => {
     const platform = btn.dataset.platform;
     const text = overlayText.innerText;
@@ -722,7 +733,7 @@ document.querySelectorAll('.share-btn[data-platform]').forEach(btn => {
     }
   });
 });
-
+*/
 /* =======================
    INIT
    ======================= */
@@ -804,7 +815,7 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
       }
     });
 }
-
+/*
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/larouedelaservitude/service-worker.js')
@@ -815,12 +826,54 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
           console.log('Échec de l\'enregistrement du ServiceWorker : ', error);
         });
     });
+  }*/
+/* ==========================================
+   Chargement dynamique des boutons en ligne
+   ========================================== */
+async function loadButtons() {
+  try {
+    const resp = await fetch("buttons.html", { cache: "no-store" });
+    if (!resp.ok) throw new Error("buttons.html non trouvé");
+    const html = await resp.text();
+    document.getElementById("buttonsContainerOverlay").innerHTML = html;
+    initShareButtons();
+    initFeedbackButtons();
+    console.log("✅ Boutons chargés");
+  } catch (err) {
+    console.warn("⚠️ Impossible de charger buttons.html :", err);
   }
-  
+}
+
+window.addEventListener("online", loadButtons);
+window.addEventListener("offline", () => {
+  document.getElementById("buttonsContainerOverlay").innerHTML = "";
+});
+if (navigator.onLine) loadButtons();
+
+/* =============== PLACEHOLDER ===============
+   ici vient ton code JavaScript principal (roue, feedback, etc.)
+   Rien d’autre n’a été modifié
+   ========================================== */
+
+// Exemple minimal pour démonstration :
+function initShareButtons(){ console.log("Share buttons actifs"); }
+function initFeedbackButtons(){ console.log("Feedback buttons actifs"); }
+
+/* ============================
+   Service Worker
+   ============================ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/larouedelaservitude/service-worker.js')
+      .then(reg => console.log('ServiceWorker enregistré :', reg.scope))
+      .catch(err => console.warn('Échec SW :', err));
+  });
+}  
 </script>
 
 </body>
 </html>
+
 
 
 
