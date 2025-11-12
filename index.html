@@ -115,55 +115,6 @@ transform:translate(-50%,-50%);animation:spark 450ms ease-out forwards;z-index:8
   display: none !important;
 }
 
-  /* Boutons de retour utilisateur */
-.feedback-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 14px;
-}
-
-.feedback-btn {
-  background: #c00;
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 15px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.2s ease, transform 0.15s ease;
-}
-
-.feedback-btn:hover {
-  background: #900;
-  transform: scale(1.05);
-}
-
-.feedback-btn:active {
-  transform: scale(0.97);
-}
-
-/* Empêche le défilement de la page sur mobile */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  overscroll-behavior: contain; /* bloque l'effet "rebond" sur mobile */
-  touch-action: none; /* empêche le scroll tactile */
-}
-
-/* Empêche un fond plus grand que l’écran */
-body {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 </style>
 </head>
 <body>
@@ -186,43 +137,10 @@ body {
 <div id="overlay" class="overlay" aria-hidden="true">
   <div class="bubble" role="dialog" aria-modal="true">
     <div id="overlayText"></div>
-    <div class="share-bar" id="shareBar">
-      <button class="share-btn" data-platform="facebook" title="Partager sur Facebook">📘</button>
-      <button class="share-btn" data-platform="x" title="Partager sur X / Twitter">🐦</button>
-      <button class="share-btn" data-platform="instagram" title="Partager sur Instagram">📸</button>
-      <button class="share-btn" data-platform="linkedin" title="Partager sur LinkedIn">💼</button>
-      <button class="share-btn" data-platform="snapchat" title="Partager sur Snapchat">👻</button>
-      <button class="share-btn" data-platform="tiktok" title="Partager sur TikTok">🎵</button>
-      <button class="share-btn" data-platform="whatsapp" title="Partager sur WhatsApp">💬</button>
-      <button class="share-btn" data-platform="telegram" title="Partager sur Telegram">📨</button>
-      <button class="share-btn" id="copyText" title="Copier le texte">📋</button>
-    </div>
+      <!-- Boutons chargés dynamiquement -->
+      <div id="buttonsContainer"></div>
     <button id="overlayClose" class="close" aria-label="Fermer">✕</button>
   </div>
-</div>
-
-<!-- Modal feedback (placer dans body) -->
-<button id="openFeedbackForm" class="feedback-btn" style="display:none">Donner un complément d'information</button>
-
-<div id="feedbackModal" style="display:none;position:fixed;inset:0;z-index:12000;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);">
-  <form id="feedbackForm" style="background:#fff;padding:18px;border-radius:10px;max-width:520px;width:92%;box-sizing:border-box;">
-    <h3>Donner un complément d'information</h3>
-    <input type="hidden" id="formResult" name="resultText" value="">
-    <input type="text" name="honeypot" id="honeypot" style="display:none" autocomplete="off">
-    <label style="display:block;margin-top:8px;">
-      Votre message
-      <textarea id="formMessage" name="userMessage" required style="width:100%;height:120px"></textarea>
-    </label>
-    <label style="display:block;margin-top:8px;">
-      Votre email (optionnel)
-      <input id="formEmail" name="userEmail" type="email" style="width:100%">
-    </label>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
-      <button type="button" id="closeFeedback">Annuler</button>
-      <button type="submit">Envoyer</button>
-    </div>
-    <div id="feedbackStatus" style="margin-top:10px;font-size:13px;color:#333;display:none;"></div>
-  </form>
 </div>
   
 <script>
@@ -829,4 +747,5 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
 
 </body>
 </html>
+
 
