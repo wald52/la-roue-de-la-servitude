@@ -237,18 +237,18 @@ let ENTRIES = [
   "Encore"
 ];
 
-const canvas = document.getElementById('wheel'), 
+const canvas = document.getElementById('wheel');
 const ctx = canvas.getContext('2d');
-const W = canvas.width, 
-const H = canvas.height, 
-const CX = W/2, 
-const CY = H/2, 
+const W = canvas.width;
+const H = canvas.height; 
+const CX = W/2;
+const CY = H/2; 
 const R = Math.min(W,H) * 0.48;
 const wheelArea = document.getElementById('wheelArea');
 const btn = document.getElementById('spinBtn');
 const overlay = document.getElementById('overlay');
 const overlayText = document.getElementById('overlayText');
-const overlayClose = document.getElementById('overlayClose'), 
+const overlayClose = document.getElementById('overlayClose');
 const copyBtn = document.getElementById('copyText');
 
 const spinSoundSrc = 'wheel-spin.mp3'; // short click sound used per-sector
@@ -829,3 +829,4 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
 
 </body>
 </html>
+
