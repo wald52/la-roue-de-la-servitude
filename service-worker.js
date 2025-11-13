@@ -21,21 +21,6 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activation : nettoyage des anciens caches
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
-  );
-});
-
 // Gestion des requêtes : stratégie "cache-first" pour TOUTES les requêtes
 self.addEventListener('fetch', (event) => {
   // Vérifie si la requête concerne un fichier audio
