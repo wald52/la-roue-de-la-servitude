@@ -2,6 +2,7 @@ const CACHE_NAME = 'ma-pwa-cache-v1';
 const urlsToCache = [
   '/larouedelaservitude/',
   '/larouedelaservitude/icons/icon-192x192.png',
+  '/larouedelaservitude/icons/icon-512x512.png',
   '/larouedelaservitude/images/center3.avif',
   '/larouedelaservitude/audio/wheel-spin2.mp3',
   '/larouedelaservitude/audio/coin2.mp3',
