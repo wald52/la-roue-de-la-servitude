@@ -7,7 +7,7 @@
   const GRAVITY = 12;         // gravité
   const AIR = 0.980;           // damping
   const LIFETIME = 10000;       // durée avant fade
-  const SIZE_BASE = 28;        // taille de base emoji
+  const SIZE_BASE = 24;        // taille de base emoji
   const OUTER_FORCE = 9.5;     // force initiale d'éjection
   const ROT_RANGE = 360;       // degrés max de rotation initiale
 
