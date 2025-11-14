@@ -1,23 +1,14 @@
+/* bills.css — styles pour les billets animés */
 .bill {
-  position: absolute;
-  font-size: 26px;         /* taille du billet */
+  position: fixed;
   pointer-events: none;
-  opacity: 1;
-  transform: translate(-50%, -50%) rotate(0deg);
-  animation: billFall 1.6s ease-out forwards;
-}
-
-@keyframes billFall {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  70% {
-    opacity: 1;
-    transform: translate(-50%, 40px) rotate(20deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 140px) rotate(45deg);
-  }
+  will-change: transform, opacity, left, top;
+  font-size: 28px;
+  transform-origin: center;
+  user-select: none;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.08);
+  transition: opacity 0.35s linear;
+  z-index: 12000;
+  opacity: 0;
+  -webkit-font-smoothing: antialiased;
 }
