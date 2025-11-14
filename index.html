@@ -246,6 +246,7 @@ const overlayClose = document.getElementById('overlayClose'), copyBtn = document
 
 const spinSoundSrc = 'audio/wheel-spin2.mp3'; // short click sound used per-sector
 const coinSound = new Audio('audio/coin3.mp3'); coinSound.volume = 0.95;
+const blow = new Audio('audio/air-blow.mp3'); blow.volume = 0.5;
 
 /* Tuning */
 const rotationFactor = 1.4;
@@ -365,7 +366,9 @@ function drawWheel(a){
 function boostWheel(e){
   hasBeenSpun = true;
 
-spawnBills(e, 8);
+  spawnBills(e, 8);
+
+  try { blow.play().catch(()=>{}); } catch(e){}
 
   if (Math.abs(angularVelocity) < 0.01) {
     targetVelocity = Math.min(MAX_VEL, targetVelocity + BOOST * 3.0);
@@ -811,6 +814,7 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
 
 </body>
 </html>
+
 
 
 
