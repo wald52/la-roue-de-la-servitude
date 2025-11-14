@@ -31,7 +31,7 @@
 <!-- html2canvas pour la capture -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-<link rel="stylesheet" href="bills.css">
+<link rel="stylesheet" href="/larouedelaservitude/bills.css">
 
 <style>
 :root{
@@ -364,19 +364,8 @@ function drawWheel(a){
    ======================= */
 function boostWheel(e){
   hasBeenSpun = true;
-  // appels avec les coordonnées du clic
-const rect = wheelArea.getBoundingClientRect();
 
-let x, y;
-if (e.touches && e.touches[0]) {
-  x = e.touches[0].clientX - rect.left;
-  y = e.touches[0].clientY - rect.top;
-} else {
-  x = e.clientX - rect.left;
-  y = e.clientY - rect.top;
-}
-
-createBills(x, y);
+spawnBills(e, 12);
 
   if (Math.abs(angularVelocity) < 0.01) {
     targetVelocity = Math.min(MAX_VEL, targetVelocity + BOOST * 3.0);
@@ -818,8 +807,10 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
 
   
 </script>
-<script src="bills.js"></script>
+<script src="/larouedelaservitude/bills.js" defer></script>
+
 </body>
 </html>
+
 
 
