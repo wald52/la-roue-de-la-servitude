@@ -1,0 +1,23 @@
+.bill {
+  position: absolute;
+  font-size: 26px;         /* taille du billet */
+  pointer-events: none;
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: billFall 1.6s ease-out forwards;
+}
+
+@keyframes billFall {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, 40px) rotate(20deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 140px) rotate(45deg);
+  }
+}
