@@ -16,9 +16,9 @@ import {
 // ================================
 
 let sounds = {
-  coin: new Audio('/larouedelaservitude/audio/coin.mp3'),
-  wheel: new Audio('/larouedelaservitude/audio/wheel-spin.mp3'),
-  scratch: new Audio('/larouedelaservitude/audio/frottement-papier.mp3')
+  coin: new Audio('/larouedelaservitude/audio/coin4.mp3'),
+  wheel: new Audio('/larouedelaservitude/audio/wheel-spin2.mp3'),
+  scratch: new Audio('/larouedelaservitude/audio/frottement-papier2.mp3')
 };
 
 // Empêcher la lecture automatique (préchargement silencieux)
