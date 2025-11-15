@@ -1,55 +1,104 @@
-const CACHE_NAME = 'larouedelaservitude-v5';
+const CACHE_NAME = 'larouedelaservitude-v7';
+
+/*  
+   IMPORTANT :
+   - On corrige les chemins pour GitHub Pages.
+   - On précharge correctement les sons AVANT la première utilisation.
+   - On évite de cacher les fichiers dynamiques (boutons, feedback, HTML dynamique).
+   - On optimise la bande passante Netlify.
+*/
+
+const BASE = '/larouedelaservitude';  // GitHub Pages prefix
 const urlsToCache = [
-  '/larouedelaservitude/',
-  '/larouedelaservitude/icons/icon-192x192.png',
-  '/larouedelaservitude/icons/icon-512x512.png',
-  '/larouedelaservitude/images/center3.avif',
-  '/larouedelaservitude/audio/coin3.mp3',
-  '/larouedelaservitude/audio/wheel-spin2.mp3',
+  `${BASE}/`,
+  `${BASE}/index.html`,
+  `${BASE}/images/center3.avif`,
+
+  // 🎵 Préchargement des sons
+  `${BASE}/audio/coin3.mp3`,
+  `${BASE}/audio/wheel-spin2.mp3`,
+
+  // 📱 Icônes importantes pour PWA
+  `${BASE}/icons/icon-192x192.png`,
+  `${BASE}/icons/icon-512x512.png`,
+  `${BASE}/site.webmanifest`,
 ];
 
-// Installation : mise en cache des ressources
-self.addEventListener('install', (event) => {
+/* ------------------------
+   INSTALLATION (pré-cache)
+------------------------ */
+self.addEventListener("install", (event) => {
+  self.skipWaiting(); // active immédiatement
+
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(urlsToCache);
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la mise en cache :', error);
-      })
+      .then((cache) => cache.addAll(urlsToCache))
+      .catch((err) => console.error("Pré-cache échoué :", err))
   );
 });
 
-// Gestion des requêtes : stratégie "cache-first" pour TOUTES les requêtes
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
-        // Retourne la version en cache si elle existe
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        // Sinon, essaie de récupérer depuis le réseau
-        return fetch(event.request)
-          .then((response) => {
-            // Met en cache la nouvelle réponse si la requête réseau réussit
-            if (response && response.status === 200 && response.type === 'basic') {
-              const responseToCache = response.clone();
-              caches.open(CACHE_NAME)
-                .then((cache) => {
-                  cache.put(event.request, responseToCache);
-                });
-            }
-            return response;
-          })
-          .catch(() => {
-            // Retourne une réponse par défaut si tout échoue
-            return new Response('Ressource non disponible hors-ligne.', {
-              status: 404,
-              statusText: 'Non trouvé dans le cache ou hors-ligne',
-            });
-          });
-      })
+/* ------------------------
+   ACTIVATION (nettoyage)
+------------------------ */
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((names) =>
+      Promise.all(
+        names
+          .filter((name) => name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
+      )
+    )
+  );
+  self.clients.claim();
+});
+
+/* ------------------------
+   FETCH optimisé :
+   - HTML => Network First (évite les vieilles versions)
+   - sons / images => Cache First
+   - API (Netlify functions) => jamais mis en cache !
+------------------------ */
+self.addEventListener("fetch", (event) => {
+  const url = new URL(event.request.url);
+
+  // ⚠️ NE PAS cacher les fonctions Netlify → requête dynamique
+  if (url.pathname.includes("/.netlify/functions/")) {
+    return event.respondWith(fetch(event.request));
+  }
+
+  // ⚠️ NE PAS cacher buttons.html (chargé dynamiquement)
+  if (url.pathname.endsWith("buttons.html")) {
+    return event.respondWith(fetch(event.request));
+  }
+
+  // 📝 HTML → Network First
+  if (event.request.headers.get("accept")?.includes("text/html")) {
+    return event.respondWith(
+      fetch(event.request)
+        .then((res) => {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(event.request, clone));
+          return res;
+        })
+        .catch(() => caches.match(event.request))
+    );
+  }
+
+  // 🎵 Fichiers statiques → Cache First
+  return event.respondWith(
+    caches.match(event.request).then((cacheRes) => {
+      if (cacheRes) return cacheRes;
+
+      return fetch(event.request)
+        .then((res) => {
+          if (!res || res.status !== 200) return res;
+
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(event.request, clone));
+          return res;
+        })
+        .catch(() => cacheRes)
+    })
   );
 });
