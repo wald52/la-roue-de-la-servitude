@@ -1,6 +1,9 @@
 // bills.js — effet billets (option C)
 // Usage: spawnBills(eventOrCoords, count)
 // eventOrCoords can be an Event (mousedown/touchstart) or {x:.., y:..}
+// son joué pour chaque billet
+const billSoundBuffer = new Audio("audio/frottement-papier.mp3");
+billSoundBuffer.volume = 0.8;
 
 (() => {
   const MAX_BILLS = 64;        // max éléments en DOM
