@@ -1,5 +1,3 @@
-const axios = require("./axios.min.js");
-
 exports.handler = async (event) => {
   // === 💡 Gestion des CORS pour plusieurs domaines autorisés ===
   const allowedOrigins = [
@@ -28,7 +26,6 @@ exports.handler = async (event) => {
     const { resultText, userMessage, type } = JSON.parse(event.body);
 
     // Anti-spam simple côté serveur
-    // 1. Message trop court ou vide
     if (!userMessage || userMessage.trim().length < 10) {
       return {
         statusCode: 400,
@@ -37,7 +34,6 @@ exports.handler = async (event) => {
       };
     }
 
-    // 2. Trop de liens (anti-spam)
     const linkCount = (userMessage.match(/https?:\/\//g) || []).length;
     if (linkCount > 3) {
       return {
@@ -54,8 +50,8 @@ Merci de réduire le nombre de liens et de réessayer.`
     const repoName = "larouedelaservitude";
     const token = process.env.GITHUB_TOKEN;
     const categoryIds = {
-      info: "46570623",   // Compléments d'information
-      error: "46570630"   // Signalements d'erreurs
+      info: "46570623",
+      error: "46570630"
     };
     const categoryId = categoryIds[type] || categoryIds.info;
 
@@ -63,27 +59,32 @@ Merci de réduire le nombre de liens et de réessayer.`
     const discussionTitle = `${type === "error" ? "🛠️ Signalement" : "💡 Complément"} sur le résultat : ${resultText}`;
     const discussionBody = `**Résultat :** ${resultText}\n\n**Message de l'utilisateur :**\n${userMessage}`;
 
-    // Appel à l'API GitHub avec axios
-    const response = await axios.post(
-      `https://api.github.com/repos/${repoOwner}/${repoName}/discussions`,
-      {
+    // Appel à l'API GitHub avec fetch natif
+    const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/discussions`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
         title: discussionTitle,
         body: discussionBody,
         category_id: categoryId
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/vnd.github+json",
-          "Content-Type": "application/json"
-        }
-      }
-    );
+      })
+    });
 
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("Erreur GitHub:", errorData);
+      return { statusCode: 500, headers, body: "Erreur GitHub API" };
+    }
+
+    const data = await response.json();
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ url: response.data.html_url })
+      body: JSON.stringify({ url: data.html_url })
     };
   } catch (err) {
     console.error(err);
