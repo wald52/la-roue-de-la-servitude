@@ -64,7 +64,7 @@ Merci de réduire le nombre de liens et de réessayer.`
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json",
+        Accept: "application/vnd.github.v3+json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
