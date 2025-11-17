@@ -77,7 +77,7 @@ Merci de réduire le nombre de liens et de réessayer.`
     if (!response.ok) {
       const errorData = await response.text();
       console.error("Erreur GitHub:", errorData);
-      return { statusCode: 500, headers, body: JSON.stringify({ error: "Erreur GitHub API", details: errorData }) };
+      return { statusCode: 500, headers, body: JSON.stringify({ error: "Erreur GitHub API2", details: errorData }) };
     }
 
     const data = await response.json();
