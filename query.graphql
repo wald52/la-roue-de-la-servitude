@@ -1,0 +1,11 @@
+{
+  repository(owner: "wald52", name: "larouedelaservitude") {
+    discussionCategories(first: 10) {
+      nodes {
+        id
+        name
+        slug
+      }
+    }
+  }
+}
