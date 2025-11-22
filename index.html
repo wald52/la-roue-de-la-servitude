@@ -228,9 +228,6 @@ body {
 <script type="module">
   import { getEntries } from "/larouedelaservitude/js/entries.js";
   const ENTRIES = getEntries();
-
-console.log(ENTRIES.slice(0, 5));
-
   
 const canvas = document.getElementById('wheel'), ctx = canvas.getContext('2d');
 const W = canvas.width, H = canvas.height, CX = W/2, CY = H/2, R = Math.min(W,H) * 0.48;
@@ -808,6 +805,7 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
 
 </body>
 </html>
+
 
 
 
