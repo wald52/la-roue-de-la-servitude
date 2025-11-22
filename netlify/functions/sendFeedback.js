@@ -3,8 +3,7 @@ exports.handler = async (event) => {
   const allowedOrigins = [
     "https://wald52.github.io",
     "https://wald52.github.io/larouedelaservitude",
-    "https://larouedelaservitude.netlify.app",
-    "https://www.larouedelaservitude.fr"
+    "https://larouedelaservitude.netlify.app"
   ];
   const origin = event.headers.origin;
   const corsHeaders = {
@@ -42,6 +41,12 @@ exports.handler = async (event) => {
       };
     }
 
+    // === 🔧 Utilitaires ===
+    const escapeGraphQL = (str) =>
+      str
+        .replace(/\\/g, "\\\\")
+        .replace(/"/g, '\\"');
+
     // === 🔧 Configuration GitHub ===
     const token = process.env.GITHUB_TOKEN;
 
@@ -51,16 +56,19 @@ exports.handler = async (event) => {
     };
     const categoryId = categoryIds[type] || categoryIds.info;
 
-    // ⚠️ IMPORTANT : ID du REPOSITORY, pas son nom !
-    const repositoryId = "R_kgDOQOpIPw";
+    // ⚠️ ID du repository, PAS son nom
+    const repositoryId = "R_kgDOQOpIPw"; // <-- remplace par ton vrai repoId si différent
 
     // === 📝 Construction du titre + corps ===
+    const safeResult = escapeGraphQL(resultText);
+    const safeMessage = escapeGraphQL(userMessage);
+
     const title =
-      `${type === "error" ? "🛠️ Signalement" : "💡 Complément"} sur le résultat : ${resultText}`;
+      `${type === "error" ? "🛠️ Signalement" : "💡 Complément"} sur le résultat : ${safeResult}`;
 
     const body =
-      `**Résultat :** ${resultText}\n\n` +
-      `**Message de l'utilisateur :**\n${userMessage}`;
+      `**Résultat :** ${safeResult}\n\n` +
+      `**Message de l'utilisateur :**\n${safeMessage}`;
 
     // === 🧩 Mutation GraphQL ===
     const query = `
@@ -96,6 +104,7 @@ exports.handler = async (event) => {
 
     const data = await response.json();
 
+    // === ❌ Gestion d'erreurs GraphQL ===
     if (data.errors) {
       console.error("Erreur GraphQL :", data.errors);
       return {
@@ -105,6 +114,7 @@ exports.handler = async (event) => {
       };
     }
 
+    // === ✅ OK ===
     const url = data.data.createDiscussion.discussion.url;
 
     return {
