@@ -30,7 +30,7 @@
     source.buffer = billBuffer;
 
     // Légère variation de pitch pour rendre naturel
-    source.playbackRate.value = 1.35 + Math.random() * 0.20;
+    source.playbackRate.value = 1;
 
     source.connect(audioCtx.destination);
     source.start(0);
@@ -67,6 +67,9 @@
 
     const size = SIZE_BASE + rand(-6, 6);
     el.style.fontSize = size + "px";
+
+    // REND LE BILLET VISIBLE
+    el.style.opacity = "1";
 
     document.body.appendChild(el);
 
