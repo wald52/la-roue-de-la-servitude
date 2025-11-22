@@ -392,16 +392,32 @@ btn.addEventListener('click', boostWheel);
 /* =======================
    SON PAR PASSAGE DE SECTEUR
    ======================= */
+
+function playSound(audioElement) {
+    audioElement.currentTime = 0; // Réinitialise le son au début
+    const playPromise = audioElement.play();
+
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.error("Erreur lors de la lecture du son :", error);
+        });
+    }
+}
+  
 animate && (animate.prevIndex = -1); // sécurité
-function playSectorClick(){
-  try {
-    const snd = new Audio(spinSoundSrc);
-    snd.volume = 0.7;
-    const absVel = Math.abs(angularVelocity);
-    const rate = Math.min(2.5, Math.max(0.5, absVel * 80 + 0.5));
-    snd.playbackRate = rate;
-    snd.play().catch(()=>{});
-  } catch(e){}
+function playSectorClick() {
+    try {
+        const snd = new Audio(spinSoundSrc);
+        snd.volume = 0.7;
+        const absVel = Math.abs(angularVelocity);
+        const rate = Math.min(2.5, Math.max(0.5, absVel * 80 + 0.5));
+        snd.playbackRate = rate;
+
+        // Appelle `playSound` pour jouer le son
+        playSound(snd);
+    } catch(e) {
+        console.error("Erreur dans playSectorClick : ", e);
+    }
 }
 
 /* =======================
@@ -814,6 +830,7 @@ function sendFeedbackToGitHub(resultText, userMessage, type) {
 
 </body>
 </html>
+
 
 
 
